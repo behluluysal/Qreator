@@ -1,0 +1,113 @@
+﻿@model Qr
+
+@{
+    ViewData["Title"] = "Anasayfa";
+}
+
+<header class="masthead">
+    <div class="container position-relative">
+        <div class="row justify-content-center">
+            <div class="col-xl-6">
+                <div class="text-center text-white">
+                    <h1 class="mb-5">Kolayca QR kod oluşturun!</h1>
+                    <form asp-action="GenerateQrCode" autocomplete="off">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <select class="form-control form-control-lg" id="DataType" asp-for="DataType" required>
+                                    <option value="" selected disabled>Seçiniz</option>
+                                    <option value="Url">URL</option>
+                                    <option value="Email">E-posta</option>
+                                    <option value="PhoneNumber">Telefon Numarası</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3" id="urlInput" style="display:none;">
+                            <div class="col">
+                                <input class="form-control form-control-lg" asp-for="Url" type="url" placeholder="https://www.example.com"/>
+                            </div>
+                        </div>
+                        <div class="row mb-3" id="emailInput" style="display:none;">
+                            <div class="col">
+                                <input class="form-control form-control-lg" asp-for="Email" type="email" placeholder="example@example.com"/>
+                            </div>
+                        </div>
+                        <div class="row mb-3" id="phoneInput" style="display:none;">
+                            <div class="col">
+                                <input class="form-control form-control-lg" asp-for="PhoneNumber" type="tel" placeholder="0 (123) 456 78 90"/>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-auto">
+                                <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Dönüştür</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="features-icons bg-light text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex">
+                        <i class="bi-window m-auto text-primary"></i>
+                    </div>
+                    <h3>Hızlı ve Duyarlı Tasarım</h3>
+                    <p class="lead mb-0">Qreator, tüm cihazlarda mükemmel görünecek şekilde optimize edilmiştir. Kullanıcılar, mobil ve masaüstü cihazlarında sorunsuz bir deneyim yaşarlar!</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex">
+                        <i class="bi-layers m-auto text-primary"></i>
+                    </div>
+                    <h3>Kapsamlı Özelleştirme</h3>
+                    <p class="lead mb-0">Kullanıcılar, Qreator ile ihtiyaçlarına göre QR kodlarını kolayca özelleştirebilir. URL, e-posta veya telefon numarası gibi farklı veri türlerini destekler!</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                    <div class="features-icons-icon d-flex">
+                        <i class="bi-terminal m-auto text-primary"></i>
+                    </div>
+                    <h3>Kullanımı Kolay</h3>
+                    <p class="lead mb-0">Qreator, sade ve anlaşılır bir arayüze sahiptir. Kullanıcılar, adım adım yönlendirmelerle QR kod oluşturma işlemini hızlıca gerçekleştirebilir!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.getElementById("DataType").addEventListener("change", function() {
+        var selectedType = this.value;
+
+        var urlInput = document.getElementById("urlInput");
+        var emailInput = document.getElementById("emailInput");
+        var phoneInput = document.getElementById("phoneInput");
+
+        urlInput.style.display = "none";
+        emailInput.style.display = "none";
+        phoneInput.style.display = "none";
+
+        urlInput.querySelector("input").removeAttribute("required");
+        emailInput.querySelector("input").removeAttribute("required");
+        phoneInput.querySelector("input").removeAttribute("required");
+
+        if (selectedType === "Url") {
+            urlInput.style.display = "block";
+            urlInput.querySelector("input").setAttribute("required", "required");
+        } else if (selectedType === "Email") {
+            emailInput.style.display = "block";
+            emailInput.querySelector("input").setAttribute("required", "required");
+        } else if (selectedType === "PhoneNumber") {
+            phoneInput.style.display = "block";
+            phoneInput.querySelector("input").setAttribute("required", "required");
+        }
+    });
+</script>
+
