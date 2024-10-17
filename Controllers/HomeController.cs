@@ -5,6 +5,7 @@ using ZXing;
 using ZXing.QrCode;
 using SkiaSharp;
 using System.Runtime.InteropServices;
+using RestSharp;
 
 namespace QrCodeGenerator.Controllers
 {
@@ -40,30 +41,41 @@ namespace QrCodeGenerator.Controllers
                     {
                         return BadRequest("URL alanı boş olamaz.");
                     }
+
                     qrData = model.Url;
                     break;
-                
+
                 case "Email":
                     if (string.IsNullOrEmpty(model.Email))
                     {
                         return BadRequest("E-posta alanı boş olamaz.");
                     }
+
                     qrData = $"mailto:{model.Email}";
                     break;
-                
+
                 case "PhoneNumber":
                     if (string.IsNullOrEmpty(model.PhoneNumber))
                     {
                         return BadRequest("Telefon numarası alanı boş olamaz.");
                     }
+
                     qrData = $"tel:{model.PhoneNumber}";
                     break;
-                
+
                 default:
                     return BadRequest("Geçersiz veri tipi.");
             }
+            
+            var captchaToken = Request.Form["g-recaptcha-response"];
+            
+            if(!VerifyCaptcha(captchaToken))
+            {
+                ViewBag.CaptchaError = true;
+                return View();
+            }
 
-            string qrCodeImagePath = GenerateQrCodeForUrl(qrData);
+            string qrCodeImagePath = GenerateQrCodeForUrl(qrData, model.IsLogoIncluded);
 
             model.ImagePath = qrCodeImagePath.Replace("wwwroot", "");
 
@@ -75,9 +87,10 @@ namespace QrCodeGenerator.Controllers
             return View("QrResult", model);
         }
 
-        private string GenerateQrCodeForUrl(string url)
+        private string GenerateQrCodeForUrl(string url, bool includeLogo)
         {
             string filePath = Path.Combine("wwwroot", "qrcodes", $"{Guid.NewGuid()}.png");
+            string logoPath = Path.Combine("wwwroot", "images", "logo.png"); 
 
             var qrWriter = new BarcodeWriterPixelData
             {
@@ -102,7 +115,8 @@ namespace QrCodeGenerator.Controllers
                 {
                     IntPtr ptr = handle.AddrOfPinnedObject();
 
-                    using (var bitmap = new SKBitmap(new SKImageInfo(pixelData.Width, pixelData.Height, SKColorType.Bgra8888, SKAlphaType.Premul)))
+                    using (var bitmap = new SKBitmap(new SKImageInfo(pixelData.Width, pixelData.Height,
+                               SKColorType.Bgra8888, SKAlphaType.Premul)))
                     {
                         bitmap.InstallPixels(bitmap.Info, ptr, bitmap.RowBytes);
                         canvas.DrawBitmap(bitmap, 0, 0);
@@ -111,6 +125,17 @@ namespace QrCodeGenerator.Controllers
                 finally
                 {
                     handle.Free();
+                }
+
+                if (includeLogo)
+                {
+                    using (var logoBitmap = SKBitmap.Decode(logoPath))
+                    {
+                        int logoSize = 50;
+                        int x = (pixelData.Width - logoSize) / 2;
+                        int y = (pixelData.Height - logoSize) / 2;
+                        canvas.DrawBitmap(logoBitmap, new SKRect(x, y, x + logoSize, y + logoSize));
+                    }
                 }
 
                 using (var image = surface.Snapshot())
@@ -122,6 +147,22 @@ namespace QrCodeGenerator.Controllers
             }
 
             return filePath;
+        }
+        
+        public bool VerifyCaptcha(string captchaToken)
+        {
+            var client = new RestClient("https://www.google.com/recaptcha");
+            var request = new RestRequest("api/siteverify", Method.Post);
+            request.AddParameter("secret", "");
+            request.AddParameter("response", captchaToken);
+
+            var response = client.Execute<CaptchaResponse>(request);
+
+            if(response.Data.Success && response.Data.Score > 0.6)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

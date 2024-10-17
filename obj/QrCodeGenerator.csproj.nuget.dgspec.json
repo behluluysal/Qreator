@@ -59,6 +59,10 @@
               "target": "Package",
               "version": "[9.0.0-rc.1.24451.1, )"
             },
+            "RestSharp": {
+              "target": "Package",
+              "version": "[112.1.0, )"
+            },
             "SkiaSharp": {
               "target": "Package",
               "version": "[3.0.0-preview.4.1, )"

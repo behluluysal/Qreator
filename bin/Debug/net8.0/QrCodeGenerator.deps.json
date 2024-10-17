@@ -11,6 +11,7 @@
           "Microsoft.EntityFrameworkCore.Design": "9.0.0-rc.1.24451.1",
           "Microsoft.EntityFrameworkCore.SqlServer": "9.0.0-rc.1.24451.1",
           "Microsoft.EntityFrameworkCore.Tools": "9.0.0-rc.1.24451.1",
+          "RestSharp": "112.1.0",
           "SkiaSharp": "3.0.0-preview.4.1",
           "SkiaSharp.QrCode": "0.7.0",
           "ZXing.Net": "0.16.9"
@@ -753,6 +754,14 @@
           }
         }
       },
+      "RestSharp/112.1.0": {
+        "runtime": {
+          "lib/net8.0/RestSharp.dll": {
+            "assemblyVersion": "112.1.0.0",
+            "fileVersion": "112.1.0.0"
+          }
+        }
+      },
       "SkiaSharp/3.0.0-preview.4.1": {
         "dependencies": {
           "SkiaSharp.NativeAssets.Win32": "3.0.0-preview.4.1",
@@ -1371,6 +1380,13 @@
       "sha512": "sha512-VP/+5Djwzv/Ves5kbuzWENNMh7COnXSDVKgAuljvyoX49T/72lXkzzAorpXQNx812lD/MxUqpO8GVyizEO+7OA==",
       "path": "mono.texttemplating/3.0.0-preview-0052-g5d0f76c785",
       "hashPath": "mono.texttemplating.3.0.0-preview-0052-g5d0f76c785.nupkg.sha512"
+    },
+    "RestSharp/112.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bOUGNZqhhv/QeCXHTKEUil846yBjwWXpzPKjO67kFvaAOoF361z7jLY5BMnuZ6WD2WQRA750sNMcK7MSPCQ5Mg==",
+      "path": "restsharp/112.1.0",
+      "hashPath": "restsharp.112.1.0.nupkg.sha512"
     },
     "SkiaSharp/3.0.0-preview.4.1": {
       "type": "package",

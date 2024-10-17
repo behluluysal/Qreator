@@ -11,8 +11,8 @@ using QrCodeGenerator.Data;
 namespace QrCodeGenerator.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241003171146_EmailPhoneModel")]
-    partial class EmailPhoneModel
+    [Migration("20241016193308_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,6 +41,9 @@ namespace QrCodeGenerator.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsLogoIncluded")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");

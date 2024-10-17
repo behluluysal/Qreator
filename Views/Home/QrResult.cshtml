@@ -71,15 +71,12 @@
             url: qrCodeImage
         };
 
-        // Modern tarayıcı desteği
         if (navigator.share) {
             navigator.share(shareData).then(() => {
                 console.log('Başarıyla paylaşıldı');
             }).catch((error) => {
                 console.error('Paylaşma hatası:', error);
             });
-        } else {
-            alert('Bu tarayıcı paylaşım özelliğini desteklemiyor.');
         }
     }
 </script>

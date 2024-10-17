@@ -4,13 +4,20 @@
     ViewData["Title"] = "Anasayfa";
 }
 
+@if (ViewBag.CaptchaError != null)
+{
+    <div class="alert alert-danger" role="alert">
+        reCaptcha doğrulanamadı!
+    </div>
+}
+
 <header class="masthead">
     <div class="container position-relative">
         <div class="row justify-content-center">
             <div class="col-xl-6">
                 <div class="text-center text-white">
                     <h1 class="mb-5">Kolayca QR kod oluşturun!</h1>
-                    <form asp-action="GenerateQrCode" autocomplete="off">
+                    <form asp-action="GenerateQrCode" autocomplete="off" id="kayitFormu">
                         <div class="row mb-3">
                             <div class="col">
                                 <select class="form-control form-control-lg" id="DataType" asp-for="DataType" required>
@@ -36,10 +43,19 @@
                                 <input class="form-control form-control-lg" asp-for="PhoneNumber" type="tel" placeholder="0 (123) 456 78 90"/>
                             </div>
                         </div>
+                        @* <div class="row mb-3"> *@
+                        @*     <div class="col"> *@
+                        @*         <label for="isLogoIncluded">QR Koduna logo ekle:</label> *@
+                        @*         <input type="checkbox" id="isLogoIncluded" asp-for="IsLogoIncluded"/> *@
+                        @*     </div> *@
+                        @* </div> *@
                         <div class="row justify-content-center">
-                            <div class="col-auto">
-                                <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Dönüştür</button>
-                            </div>
+                            <button class="btn btn-primary btn-lg g-recaptcha"
+                                    data-sitekey=""
+                                    data-callback='onSubmit'
+                                    data-action='submit'>
+                                Kaydet
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -54,28 +70,28 @@
             <div class="col-lg-4">
                 <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                     <div class="features-icons-icon d-flex">
-                        <i class="bi-window m-auto text-primary"></i>
+                        <i class="bi-list m-auto icon-color"></i>
                     </div>
-                    <h3>Hızlı ve Duyarlı Tasarım</h3>
-                    <p class="lead mb-0">Qreator, tüm cihazlarda mükemmel görünecek şekilde optimize edilmiştir. Kullanıcılar, mobil ve masaüstü cihazlarında sorunsuz bir deneyim yaşarlar!</p>
+                    <h3>Adım 1: QR Kod Tipini Seçin</h3>
+                    <p class="lead mb-0">İlk adımda, hangi tür veriyi QR kodunuza eklemek istediğinizi belirleyin. URL, e-posta veya telefon numarası gibi seçenekler arasından tercih yapın!</p>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
                     <div class="features-icons-icon d-flex">
-                        <i class="bi-layers m-auto text-primary"></i>
+                        <i class="bi-gear m-auto icon-color"></i>
                     </div>
-                    <h3>Kapsamlı Özelleştirme</h3>
-                    <p class="lead mb-0">Kullanıcılar, Qreator ile ihtiyaçlarına göre QR kodlarını kolayca özelleştirebilir. URL, e-posta veya telefon numarası gibi farklı veri türlerini destekler!</p>
+                    <h3>Adım 2: QR Kodunuzu Özelleştirin</h3>
+                    <p class="lead mb-0">İkinci adımda, QR kodunuza bir logo eklemek isteyip istemediğinizi seçin. Kişiselleştirme seçeneklerinizle, kodunuzu tam hayal ettiğiniz gibi oluşturun!</p>
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="features-icons-item mx-auto mb-0 mb-lg-3">
                     <div class="features-icons-icon d-flex">
-                        <i class="bi-terminal m-auto text-primary"></i>
+                        <i class="bi-download m-auto icon-color"></i>
                     </div>
-                    <h3>Kullanımı Kolay</h3>
-                    <p class="lead mb-0">Qreator, sade ve anlaşılır bir arayüze sahiptir. Kullanıcılar, adım adım yönlendirmelerle QR kod oluşturma işlemini hızlıca gerçekleştirebilir!</p>
+                    <h3>Adım 3: QR Kodunuzu Oluşturun</h3>
+                    <p class="lead mb-0">Son olarak, tüm ayarlarınızı gözden geçirip "Oluştur" butonuna tıklayarak QR kodunuzu oluşturun. Artık kodunuzu indirip paylaşmanın keyfini çıkarabilirsiniz!</p>
                 </div>
             </div>
         </div>
@@ -111,3 +127,39 @@
     });
 </script>
 
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script>
+    function onSubmit(token) {
+        if (kayitFormu.reportValidity()){
+            kayitFormu.submit();
+        }
+    }
+</script>
+
+<style>
+    .icon-color {
+        color: rgba(90, 79, 207, 1);
+    }
+
+    .g-recaptcha {
+        background-color: rgba(90, 79, 207, 1);
+        border: none;
+        color: white;
+        font-size: 1.30rem;
+        padding: 0.75rem 0.5rem;
+        border-radius: 0.3rem;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        transition: background-color 0.3s ease;
+        width: 100px;
+    }
+
+    .g-recaptcha:hover {
+        background-color: rgba(90, 79, 207, 0.8);
+    }
+
+    .g-recaptcha:focus {
+        outline: none;
+    }
+</style>

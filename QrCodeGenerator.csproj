@@ -16,6 +16,7 @@
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
+      <PackageReference Include="RestSharp" Version="112.1.0" />
       <PackageReference Include="SkiaSharp" Version="3.0.0-preview.4.1" />
       <PackageReference Include="SkiaSharp.QrCode" Version="0.7.0" />
       <PackageReference Include="ZXing.Net" Version="0.16.9" />

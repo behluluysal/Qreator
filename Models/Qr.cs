@@ -18,5 +18,13 @@ public class Qr
     [Required]
     public string DataType { get; set; }
     
+    public bool IsLogoIncluded { get; set; }
+    
     public string? ImagePath { get; set; }
+}
+
+public class CaptchaResponse
+{
+    public bool Success { get; set; }
+    public double Score { get; set; }
 }
